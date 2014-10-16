@@ -2,19 +2,27 @@
 
 Useful Sass functions and mixins to work with CSS units. SassyUnits helps you easily convert, compare and include CSS units in you Sass and Compass files.
 
+CAUTION: This
+
 ## Installation
 
-SassyUnits is a Compass extension packaged as a Gem. To install it, simply follow the 3 steps below.
+SassyUnits is a Compass extension packaged as a gem. The gem has not been published yet, so to install it, you have to follow the steps below.
 
-1. Install the gem on your computer by opening a console and typing in the following command:
+1. Download the SassyUnits repository from Github as a '.zip' file and unzip it.
 
-        gem install SassyUnits
+2. Open a Terminal window and `cd` to the unzipped repository folder.
 
-2. Require the extension in you Compass `config` file.
+3. Build the gem file and install it locally by typing the following commands in your Terminal:
+
+        gem build SassyUnits.gemspec
+
+        gem install SassyUnits-0.1.0.gem
+
+4. Require the extension in you Compass config file.
 
         require 'SassyUnits'
 
-3. Import the sass files in your project
+5. Import the sass files in your project
 
         @import "SassyUnits";
 
@@ -45,7 +53,7 @@ Remember that these are all default values. They can be overriden at any time by
 
 All `$value` arguments can be passed as a number but also as a list of numbers. If passed a list, the function will be applied to each individual item and return the list of results.
 
-If a value of any other type than `number` is passed, it will be ignored and returned as is. Additionally, a warning will be thrown in case an error has occured later in the code.
+If a value of any other type than 'number' is passed, it will be ignored and returned as is. Additionally, a warning will be thrown in case an error occurs later in the code.
 
 ### Utilities
 
@@ -72,6 +80,6 @@ All math functions will automatically convert the second term of the calculation
 
 ## Mixins available
 
-* `su-rem($property, $value [, $context, $root, $fallback ])`
+* `su-rem($property, $value[, $context, $root, $fallback ])`
 
     Dynamically includes a given css property and automatically converts its specified value to 'rem'. Optionally adds a 'px' fallback for browsers not supporting the 'rem' unit.
