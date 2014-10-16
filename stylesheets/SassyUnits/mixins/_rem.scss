@@ -22,9 +22,9 @@
 
 @mixin su-rem($property, $value, $context: $su-base-font-size, $root: $su-root-font-size, $fallback: $su-support-legacy-rem)
 {
-    @if $legacy-support {
-        #{$prop}: su-to-px($value, $context, $root);
+    @if $fallback {
+        #{$property}: su-to-px($value, $context, $root);
     }
 
-    #{$prop}: su-to-rem($value, $context, $root);
+    #{$property}: su-to-rem($value, $context, $root);
 }
