@@ -82,7 +82,11 @@
 @function su-to-px( $value, $context: $su-base-font-size, $root: $su-root-font-size )
 {
     @if type-of($value) == list {
-        @return list-call($value, "su-to-px", $value, $context, $root);
+        @return list-call($value, "su-to-px", $context, $root);
+    }
+
+    @if type-of($value) != number {
+        @return $value;
     }
 
     @if unit($value) == px {
@@ -107,7 +111,11 @@
 @function su-to-em( $value, $context: $su-base-font-size, $root: $su-root-font-size )
 {
     @if type-of($value) == list {
-        @return list-call($value, "su-to-em", $value, $context, $root);
+        @return list-call($value, "su-to-em", $context, $root);
+    }
+
+    @if type-of($value) != number {
+        @return $value;
     }
 
     @if unit($value) == em {
@@ -129,7 +137,11 @@
 @function su-to-rem( $value, $context: $su-base-font-size, $root: $su-root-font-size )
 {
     @if type-of($value) == list {
-        @return list-call($value, "su-to-rem", $value, $context, $root);
+        @return list-call($value, "su-to-rem", $context, $root);
+    }
+
+    @if type-of($value) != number {
+        @return $value;
     }
 
     @if unit($value) == rem {
