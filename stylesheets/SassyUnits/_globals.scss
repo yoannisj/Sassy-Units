@@ -1,0 +1,24 @@
+// =============================================================================
+// =GLOBALS - SASSYUNITS
+// =============================================================================
+
+// =su-support-legacy-rem
+// -----------------------------------------------------------------------------
+// Setting for whether to support browser's who don't understand 'rem'. If set
+// to true, all 'rem' mixins will include a 'px' fallback by default.
+
+$su-support-legacy-rem: false;
+
+// =su-root-font-size;
+// -----------------------------------------------------------------------------
+// Font-size (in px) used as context for all 'rem' related conversions.
+// Should correspond to the font-size set on the <html> element.
+
+$su-root-font-size: 16px !default;
+
+// =su-base-font-size;
+// -----------------------------------------------------------------------------
+// Font-size (in px) used as default context for all 'em' related conversions.
+// SHould correspond to the font-size set on the <body> element.
+
+$su-base-font-size: $su-root-font-size !default;

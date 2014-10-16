@@ -1,0 +1,44 @@
+// =Mixed Units Multiplication - SassyUnits
+// =============================================================================
+
+@import "SassyUnits/utils/list-call";
+@import "SassyUnits/utils/strip-units";
+@import "SassyUnits/convert/any";
+
+// =su-multiply( $factor1, $factor2[, $context, $root ])
+// -----------------------------------------------------------------------------
+// Returns the multiplication between two numbers of mixed units, as a unitless
+// float number (converts $factor2 to same unit as $factor1).
+//
+// @param $factor1 [number|list] = the factor (or list of) to be multiplied
+// @param $factor2 [number] = the factor to multiply $factor1 by
+//
+// @return [number|list] = the result of the multiplication (or list of)
+// @return null if arguments are not all numbers
+//
+// @warn if arguments are not all numbers
+//
+// @api public
+//
+// @todo Fix mutliply() when 'em*{*}' or 'rem*em' (double division ?)
+
+@function su-multiply( $factor1, $factor2, $context: $su-base-font-size, $root: $su-root-font-size )
+{
+    // if working on a list, apply to all items in the list
+    @if type-of($factor1) == list {
+        @return list-call($factor1, "su-multiply", $factor2 );
+    }
+
+    // allow numbers only
+    @if type-of($factor1) != number or type-of($factor2) != number {
+        @warn "su-multiply(): both arguments should be numbers.";
+        @return null;
+    }
+
+    // convert $factor2 to $factor1's unit if needed
+    $unit-factor1: unit($factor1);
+    $unit-factor2: unit($factor2);
+    $factor2: if( $unit-factor1 == $unit-factor2, $factor2, _su-convert-to-unit($factor2, $unit-factor1, $context, $root) );
+
+    @return $factor1 * su-strip-units($factor2);
+}

@@ -1,0 +1,72 @@
+// ='em' based unit conversion
+// =============================================================================
+
+@import "SassyUnits/utils/list-call";
+@import "SassyUnits/utils/strip-units";
+@import "SassyUnits/globals";
+@import "SassyUnits/convert/px";
+
+// =su-em-to-px( $value[, $context ])
+// -----------------------------------------------------------------------------
+// Converts a number given in ems to pxs, based on the context font-size.
+//
+// @param $value = the number to convert into pxs
+// @param $context = the context font-size to use for conversion
+//
+// @return [number] = the number converted in pxs.
+//
+// @api public
+
+@function su-em-to-px( $value, $context: $su-base-font-size )
+{
+    // if converting a list, apply to all items in the list
+    @if type-of($value) == list {
+        @return list-call($value, "su-em-to-px", $context);
+    }
+
+    // ignore values that are not numbers
+    @if type-of($value) != number {
+        @warn "su-em-to-px(): #{$value} is not a number.";
+        @return $value;
+    }
+
+    // 0 is always 0 and should be unitless
+    @if su-strip-units($value) == 0 {
+        @return 0;
+    }
+
+    @return su-strip-units($value) * su-strip-units($context) * 1px;
+}
+
+// =su-em-to-rem( $value[, $context, $root] )
+// -----------------------------------------------------------------------------
+// Converts a number given in ems to rems, based on the context font-size and
+// the root font-size. Delegates to 'su-em-to-px()' and 'su-px-to-rem()'.
+//
+// @param $value = the value to convert into rems
+// @param $root = the font-size of the 'html' element
+//
+// @return [number] = the number converted in rems.
+//
+// @api public
+
+@function su-em-to-rem( $value, $context: $su-base-font-size, $root: $su-root-font-size )
+{
+    // if converting a list, apply to all items in the list
+    @if type-of($value) == list {
+        @return list-call($value, "su-em-to-rem", $context, $root);
+    }
+
+    // ignore values that are not numbers
+    @if type-of($value) != number {
+        @warn "su-em-to-rem(): #{$value} is not a number.";
+        @return $value;
+    }
+
+    // 0 is always 0 and should be unitless
+    @if su-strip-units($value) == 0 {
+        @return 0;
+    }
+
+    @return su-px-to-rem( su-em-to-px($value, $context), $root );
+}

@@ -1,0 +1,29 @@
+// =su-strip-units( $value )
+// -----------------------------------------------------------------------------
+// Converts a given number into a unitless value.
+//
+// @param $value [number|list] = the number (or list of numbers) with a unit
+//
+// @return [number|list] = the given number (or list of numbers) without unit
+// @return [mixed] = the unchanged value if it is not a number
+//
+// @warn if the given value is not a number
+//
+// @api public
+
+@function su-strip-units( $value )
+{
+    // if working on a list, apply to all items in the list
+    @if type-of($value) == list {
+        @return list-call($value, "su-strip-units");
+    }
+
+    // ignore values that are not numbers
+    @if type-of($value) != number {
+        @warn "su-strip-units(): #{$value} is not a number.";
+        @return $value;
+    }
+
+    // Courtesy of Hugo Giraudel => http://hugogiraudel.com/2013/08/12/sass-functions/
+    @return if( unitless($value), $value, $value / ($value * 0 + 1) );
+}

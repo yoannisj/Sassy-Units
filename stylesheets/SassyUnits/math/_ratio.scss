@@ -1,0 +1,42 @@
+// =Mixed Units Ratio Calculation - SassyUnits
+// =============================================================================
+
+@import "SassyUnits/utils/list-call";
+@import "SassyUnits/utils/strip-units";
+@import "SassyUnits/convert/any";
+
+// =su-ratio( $term1, $term2[, $context, $root ])
+// -----------------------------------------------------------------------------
+// Returns the ratio between two numbers of mixed units (converts $term2 to
+// the same unit as $term1 before stripping units).
+//
+// @param $term1 = the term1 (or list of) in the ratio calculation
+// @param $term2 = the term2 in the ratio calculation
+//
+// @return [number|list] = the calculated ratio (or list of)
+// @return null if arguments are not all numbers
+//
+// @warn if arguments are not all numbers
+//
+// @api public
+
+@function su-ratio( $term1, $term2, $context: $su-base-font-size, $root: $su-root-font-size )
+{
+    // if working on a list, apply to all items in the list
+    @if type-of($term1) == list {
+        @return list-call($term1, "su-ratio", $term2 );
+    }
+
+    // allow numbers only
+    @if type-of($term1) != number or type-of($term2) != number {
+        @warn "su-ratio(): both arguments should be numbers.";
+        @return null;
+    }
+
+    // convert term2 to term1's unit if needed
+    $unit-term1: unit($term1);
+    $unit-term2: unit($term2);
+    $term2: if( $unit-term1 == $unit-term2, $term2, _su-convert-to-unit($term2, $unit-term1, $context, $root) );
+
+    @return su-strip-units( $term1 / $term2 );
+}

@@ -1,0 +1,41 @@
+// =Mixed Units Addition - SassyUnits
+// =============================================================================
+
+@import "SassyUnits/utils/list-call";
+@import "SassyUnits/convert/any";
+
+// =su-add( $term1, $term2 )
+// -----------------------------------------------------------------------------
+// Returns the addition between two numbers of mixed units, as a unitless float
+// number (converts $term2 to same unit as $term1).
+//
+// @param $term1 [number|list] = the left term (or list of) in the addition
+// @param $term2 [number] = the right term in the addition
+//
+// @return [number|list] = the sum (or list of) between term1 and term2
+// @return null if arguments are not all numbers
+//
+// @warn if arguments are not all numbers
+//
+// @api public
+
+@function su-add( $term1, $term2, $context: $su-base-font-size, $root: $su-root-font-size )
+{
+    // if working on a list, apply to all items in the list
+    @if type-of($term1) == list {
+        @return list-call($term1, "su-add", $term2 );
+    }
+
+    // allow numbers only
+    @if type-of($term1) != number or type-of($term2) != number {
+        @warn "su-add(): both arguments should be numbers.";
+        @return null;
+    }
+
+    // convert $term2 to $term1's unit if needed
+    $unit-term1: unit($term1);
+    $unit-term2: unit($term2);
+    $term2: if( $unit-term1 == $unit-term2, $term2, _su-convert-to-unit($term2, $unit-term1, $context, $root) );
+
+    @return $term1 + $term2;
+}

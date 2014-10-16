@@ -1,0 +1,35 @@
+// =list-call( $list, $function, $args... )
+// -----------------------------------------------------------------------------
+// Applies the given function on all items of a list.
+//
+// @param $list = the original list containing the itms to modify
+// @param $function = the modifying function to apply
+// @param $args... = additional arguments needed by the modifying function
+//
+// @return [list] = the list of modified items
+//
+// @warn if the first argument is not a list
+// @warn if the modifying function does not exist
+//
+// @api public (note that this function is not namespaced because it does
+// not concern unit conversion solely, and it's use exceeds unit conversion).
+
+@function list-call( $list, $function, $args... )
+{
+    @if not function-exists($function) {
+        @warn 'list-call(): the #{$function}() function does not exist.';
+        @return null;
+    }
+
+    @if type-of($list) != list {
+        @warn 'list-call(): the first argument must be a list.';
+        @return null;
+    }
+
+    $res: ();
+    @each $item in $list {
+        $res: append( $res, call($function, $item, $args...) );
+    }
+
+    @return $res;
+}
