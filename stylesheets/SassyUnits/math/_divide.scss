@@ -1,0 +1,42 @@
+// =Mixed Units Division - SassyUnits
+// =============================================================================
+
+@import "SassyUnits/utils/list-call";
+@import "SassyUnits/utils/strip-units";
+@import "SassyUnits/convert/any";
+
+// =su-divide( $divident, $divider[, $context, $root ])
+// -----------------------------------------------------------------------------
+// Returns the division between two numbers of mixed units, as a unitless float
+// number (converts $divider to same unit as $divident).
+//
+// @param $divident [number|list] = the divident (or list of) in the calculation
+// @param $divider [number] = the divider in the calculation
+//
+// @return [number|list] = the result of the division (or list of)
+// @return null if arguments are not all numbers
+//
+// @warn if arguments are not all numbers
+//
+// @api public
+
+@function su-divide( $divident, $divider, $context: $su-base-font-size, $root: $su-root-font-size )
+{
+    // if working on a list, apply to all items in the list
+    @if type-of($divident) == list {
+        @return list-call($divident, "su-divide", $divider );
+    }
+
+    // allow numbers only
+    @if type-of($divident) != number or type-of($divider) != number {
+        @warn "su-divide(): both arguments should be numbers.";
+        @return null;
+    }
+
+    // convert $divider to $divident's unit if needed
+    $unit-divident: unit($divident);
+    $unit-divider: unit($divider);
+    $divider: if( $unit-divident == $unit-divider, $divider, _su-convert-to-unit($divider, $unit-divident, $context, $root) );
+
+    @return $divident / su-strip-units($divider);
+}

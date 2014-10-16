@@ -1,0 +1,30 @@
+// =Mixins to work with 'rem' units
+// =============================================================================
+
+@import "SassyUnits/convert/any";
+
+// =su-rem( $property, $value[, $fallback ])
+// -----------------------------------------------------------------------------
+// Dynamically includes a given css property and automatically converts its
+// specified value to 'rem'. Optionally adds a 'px' fallback for browsers not
+// supporting the 'rem' unit.
+//
+// @param $property [string] = the css property to include
+// @param $value [mixed] = the $value for the property
+// @param $fallback [bool] = whether to include a 'px' fallback or not
+//
+// @output The given css property with a 'rem' value
+//
+// @delegate 'su-to-px'
+// @delegate 'su-to-rem'
+//
+// @api public
+
+@mixin su-rem($property, $value, $fallback: $su-support-legacy-rem)
+{
+    @if $legacy-support {
+        #{$prop}: su-to-px($value);
+    }
+
+    #{$prop}: su-to-rem($value);
+}

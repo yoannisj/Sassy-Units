@@ -1,0 +1,70 @@
+// ='px' based unit conversion
+// =============================================================================
+
+@import "SassyUnits/utils/list-call";
+@import "SassyUnits/utils/strip-units";
+@import "SassyUnits/globals";
+
+// =su-px-to-em( $value[, $context ])
+// -----------------------------------------------------------------------------
+// Converts a number given in px to ems, based on the context-font-size.
+//
+// @param $value = the number to convert into ems
+// @param $context = the context font-size to use for conversion
+//
+// @return [number] = the number converted in ems.
+//
+// @api public
+
+@function su-px-to-em( $value, $context: $su-base-font-size )
+{
+    // if converting a list, apply to all items in the list
+    @if type-of($value) == list {
+        @return list-call($value, "su-px-to-em", $context);
+    }
+
+    // ignore values that are not numbers
+    @if type-of($value) != number {
+        @warn "su-px-to-em(): #{$value} is not a number.";
+        @return $value;
+    }
+
+    // 0 is always 0 and should be unitless
+    @if su-strip-units($value) == 0 {
+        @return 0;
+    }
+
+    @return (su-strip-units($value) / su-strip-units($context)) * 1em;
+}
+
+// =su-px-to-rem( $value[, $root ])
+// -----------------------------------------------------------------------------
+// Converts a number given in px to rems, based on the root font-size.
+//
+// @param $value = the value to convert into rems
+// @param $root = the font-size of the 'html' element
+//
+// @return [number] = the number converted in rems.
+//
+// @api public
+
+@function su-px-to-rem( $value, $root: $su-root-font-size )
+{
+    // if converting a list, apply to all items in the list
+    @if type-of($value) == list {
+        @return list-call($value, "su-px-to-rem", $root);
+    }
+
+        // ignore values that are not numbers
+    @if type-of($value) != number {
+        @warn "su-px-to-rem(): #{$value} is not a number.";
+        @return $value;
+    }
+
+    // 0 is always 0 and should be unitless
+    @if su-strip-units($value) == 0 {
+        @return 0;
+    }
+
+    @return (su-strip-units($value) / su-strip-units($root)) * 1rem;
+}

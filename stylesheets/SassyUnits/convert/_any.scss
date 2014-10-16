@@ -1,0 +1,140 @@
+// =============================================================================
+// =CLEVER UNIT CONVERSION - SASSYUNITS
+// =============================================================================
+
+@import "SassyUnits/utils/list-call";
+@import "SassyUnits/convert/px";
+@import "SassyUnits/convert/em";
+@import "SassyUnits/convert/rem";
+
+// _su-convert-to-unit( $value, $target-unit[, $context, $root ])
+// -----------------------------------------------------------------------------
+// Converts the given number to a target unit; reads the $value's unit to
+// delegate to the appropriate unit conversion function.
+//
+// @param $value [number|list] = number (or list of) to convert
+// @param $target-unit [string] = unit to which the $value should be converted
+// @param $context [number] = the context font-size in px (for 'em' conversions)
+// @param $root [number] = the root font-size in px (for 'rem' conversions)
+//
+// @return [number] = the converted $value
+//
+// @warn if the given value was unitless
+//
+// @api private
+
+@function _su-convert-to-unit( $value, $target-unit, $context: $su-base-font-size, $root: $su-root-font-size)
+{
+    // if converting a list, apply to all items in the list
+    @if type-of($value) == list {
+        @return list-call($value, "_su-convert-to-unit", $target-unit, $context, $root);
+    }
+
+    // ignore values that are not numbers
+    @if type-of($value) != number {
+        @warn "_su-convert-to-unit(): #{$value} is not a number.";
+        @return $value;
+    }
+
+    // 0 should be returned unit-less
+    @if strip-unit( $value ) == 0 {
+        @return 0;
+    }
+
+    // 'append' the unit to unitless numbers
+    @if unitless($value) {
+        @warn "_su-convert-to-unit(): '$value' is unitless.";
+        @return if( $target-unit == "px", $value * 1px, if( $target-unit == "em", $value * 1em, $value * 1rem));
+    }
+
+    $original-unit: unit( $value );
+
+    // return $value if no conversion is needed
+    @if $original-unit == $target-unit {
+        @return $value;
+    }
+
+    // use the '$root' argument if converting from or to 'rem'
+    @if ($original-unit == rem) or ($target-unit == rem)
+    {
+        // but not if directly converting to or from 'px'
+        @if ($original-unit == px) or ($target-unit == px) {
+            @return call("su-#{$original-unit}-to-#{$target-unit}", $value, $root);
+        }
+
+        @return call("su-#{$original-unit}-to-#{$target-unit}", $value, $context, $root);
+    }
+
+    @return call("su-#{$original-unit}-to-#{$target-unit}", $value, $context);
+}
+
+// =su-to-px( $value[, $context, $root ])
+// -----------------------------------------------------------------------------
+// Converts the given number to pixels; reads the $value's unit to delegate to
+// the appropriate unit conversion function.
+//
+// @param $value [number|list] = number (or list of) to convert
+// @param $context [number] = the context font-size in px (for 'em' conversions)
+// @param $root [number] = the root font-size in px (for 'rem' conversions)
+//
+// @api public
+
+@function su-to-px( $value, $context: $su-base-font-size, $root: $su-root-font-size )
+{
+    @if type-of($value) == list {
+        @return list-call($value, "su-to-px", $value, $context, $root);
+    }
+
+    @if unit($value) == px {
+        @return $value;
+    }
+
+    @return _su-convert-to-unit( $value, px, $context, $root );
+}
+
+// =su-to-em( $value[, $context ])
+// -----------------------------------------------------------------------------
+// Converts the given number to ems; reads the $value's unit to delegate to the
+// appropriate unit conversion function.
+//
+// @param $value [number|list] = number (or list of) to convert
+// @param $context [number] = the context font-size in px (for 'em' conversions)
+// @param $root [number] = the root font-size in px (for 'rem' conversions)
+//
+// @api public
+
+
+@function su-to-em( $value, $context: $su-base-font-size, $root: $su-root-font-size )
+{
+    @if type-of($value) == list {
+        @return list-call($value, "su-to-em", $value, $context, $root);
+    }
+
+    @if unit($value) == em {
+        @return $value;
+    }
+
+    @return _su-convert-to-unit( $value, em, $context, $root );
+}
+
+// =su-to-rem( $value[, $context, $root ])
+// -----------------------------------------------------------------------------
+// Converts the given number to rems; reads the $value's unit to delegate to the
+// appropriate unit conversion function.
+//
+// @param $value [number|list] = number (or list of) to convert
+// @param $context [number] = the context font-size in px (for 'em' conversions)
+// @param $root [number] = the root font-size in px (for 'rem' conversions)
+
+@function su-to-rem( $value, $context: $su-base-font-size, $root: $su-root-font-size )
+{
+    @if type-of($value) == list {
+        @return list-call($value, "su-to-rem", $value, $context, $root);
+    }
+
+    @if unit($value) == rem {
+        @return $value;
+    }
+
+    @return _su-convert-to-unit( $value, rem, $context, $root );
+}

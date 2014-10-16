@@ -1,0 +1,16 @@
+# OSX FILES
+# ---------
+.DS_STORE
+
+# SASS FILES
+# -----------
+.sass-cache
+
+# GEM FILES
+# ---------
+*.gem
+gems
+
+# CODEKIT FILES
+# -------------
+.codekit-config
