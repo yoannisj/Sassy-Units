@@ -24,7 +24,7 @@ SassyUnits is a Compass extension packaged as a gem. The gem has not been publis
 
 5. Import the sass files in your project
 
-        @import "SassyUnits";
+        @import "sassy-units";
 
 You are now ready to go ! Just make sure you read the Global section below, you might need to override the globals' default values in order for all functions and mixins to work as expected.
 

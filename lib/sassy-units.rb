@@ -9,7 +9,7 @@ stylesheets_path = File.join(extension_path, 'stylesheets')
 # Register Extension
 if (defined? Compass)
     # Register as a Compass extension
-    Compass::Frameworks.register('SassyUnits', :path => extension_path)
+    Compass::Frameworks.register('sassy-units', :path => extension_path)
 else
     # Compass not found, register on the Sass path via the environment.
     if ENV.has_key?("SASS_PATH")

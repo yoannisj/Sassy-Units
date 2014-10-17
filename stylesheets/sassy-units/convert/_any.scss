@@ -2,10 +2,10 @@
 // =CLEVER UNIT CONVERSION - SASSYUNITS
 // =============================================================================
 
-@import "SassyUnits/utils/list-call";
-@import "SassyUnits/convert/px";
-@import "SassyUnits/convert/em";
-@import "SassyUnits/convert/rem";
+@import "sassy-units/utils/list-call";
+@import "sassy-units/convert/px";
+@import "sassy-units/convert/em";
+@import "sassy-units/convert/rem";
 
 // _su-convert-to-unit( $value, $target-unit[, $context, $root ])
 // -----------------------------------------------------------------------------

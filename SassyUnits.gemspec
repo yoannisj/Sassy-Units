@@ -1,5 +1,5 @@
 # Replace extension with the name of your extension's .rb file
-require './lib/SassyUnits.rb'
+require './lib/sassy-units.rb'
 
 Gem::Specification.new do |s|
   # Release Specific Information

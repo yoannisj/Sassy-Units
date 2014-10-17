@@ -1,10 +1,10 @@
 // ='rem' based unit conversion
 // =============================================================================
 
-@import "SassyUnits/utils/list-call";
-@import "SassyUnits/utils/strip-units";
-@import "SassyUnits/globals";
-@import "SassyUnits/convert/px";
+@import "sassy-units/utils/list-call";
+@import "sassy-units/utils/strip-units";
+@import "sassy-units/globals";
+@import "sassy-units/convert/px";
 
 // =su-rem-to-px( $value[, $root ])
 // ---------------------------------------------------------------------------------
