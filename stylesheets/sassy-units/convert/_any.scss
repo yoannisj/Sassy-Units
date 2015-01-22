@@ -25,6 +25,11 @@
 
 @function _su-convert-to-unit( $value, $target-unit, $context: $su-base-font-size, $root: $su-root-font-size)
 {
+    // null should be returned as is
+    @if $value == null {
+        @return null;
+    }
+
     // if converting a list, apply to all items in the list
     @if type-of($value) == list {
         @return list-call($value, "_su-convert-to-unit", $target-unit, $context, $root);
@@ -37,7 +42,7 @@
     }
 
     // 0 should be returned unit-less
-    @if strip-unit( $value ) == 0 {
+    @if su-strip-units($value) == 0 or $value == 0 {
         @return 0;
     }
 
@@ -81,6 +86,16 @@
 
 @function su-to-px( $value, $context: $su-base-font-size, $root: $su-root-font-size )
 {
+    // null should be returned as is
+    @if $value == null {
+        @return null;
+    }
+
+    // 0 should be returned unit-less
+    @if su-strip-units($value) == 0 or $value == 0 {
+        @return 0;
+    }
+
     @if type-of($value) == list {
         @return list-call($value, "su-to-px", $context, $root);
     }
@@ -96,7 +111,7 @@
     @return _su-convert-to-unit( $value, px, $context, $root );
 }
 
-// =su-to-em( $value[, $context ])
+// =su-to-em( $value[, $context, $root ])
 // -----------------------------------------------------------------------------
 // Converts the given number to ems; reads the $value's unit to delegate to the
 // appropriate unit conversion function.
@@ -110,6 +125,16 @@
 
 @function su-to-em( $value, $context: $su-base-font-size, $root: $su-root-font-size )
 {
+    // null should be returned as is
+    @if $value == null {
+        @return null;
+    }
+
+    // 0 should be returned unit-less
+    @if su-strip-units($value) == 0 or $value == 0 {
+        @return 0;
+    }
+
     @if type-of($value) == list {
         @return list-call($value, "su-to-em", $context, $root);
     }
@@ -136,6 +161,16 @@
 
 @function su-to-rem( $value, $context: $su-base-font-size, $root: $su-root-font-size )
 {
+    // null should be returned as is
+    @if $value == null {
+        @return null;
+    }
+
+    // 0 should be returned unit-less
+    @if su-strip-units($value) == 0 or $value == 0 {
+        @return 0;
+    }
+
     @if type-of($value) == list {
         @return list-call($value, "su-to-rem", $context, $root);
     }

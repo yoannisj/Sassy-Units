@@ -19,9 +19,14 @@
 
 @function su-rem-to-px( $value, $root: $su-root-font-size )
 {
+    // null should be returned as is
+    @if $value == null {
+        @return null;
+    }
+
     // if converting a list, apply to all items in the list
     @if type-of($value) == list {
-        @return list-call($value,  "su-rem-to-px", $root);
+        @return list-call($value, "su-rem-to-px", $root);
     }
 
     // ignore values that are not numbers
@@ -52,6 +57,11 @@
 
 @function su-rem-to-em( $value, $context: $su-base-font-size, $root: $su-root-font-size )
 {
+    // null should be returned as is
+    @if $value == null {
+        @return null;
+    }
+
     // if converting a list, apply to all items in the list
     @if type-of($value) == list {
         @return list-call($value, "su-rem-to-em", $context, $root);
